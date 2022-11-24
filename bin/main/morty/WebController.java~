@@ -1,0 +1,52 @@
+package morty;
+
+import java.util.ArrayList;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+
+@Controller
+@RequestMapping("/web")
+public class WebController {
+	   /* 
+    	@RequestMapping("/")
+        public String index() {
+
+            return "index";
+    	}*/	    
+	@GetMapping("/hello")
+	public String testing(Model model) {
+		//model.addAttribute("name",name);
+		return  "hello";
+	}
+	
+	@PostMapping("/hello")
+	public String testingPost(@RequestParam String name,Model model) {		model.addAttribute("name",name);
+		return  "hello";
+	}
+	
+	@PostMapping(path = "/home")
+	public String testingPost(Model model) {
+		ArrayList<String> s =morty.dataFromFile();
+		String ss="";
+		//Putting all the data into one string is not ideal, but works for now 
+		for (int i = 0; i<s.size(); i++) {
+			ss+=s.get(i)+"<br>";
+		}
+		model.addAttribute("stringlist", ss);
+		return  "home";
+	}
+	@PostMapping(path = "/home", params = "add")
+	public String cancel(Model model) {
+		model.addAttribute("stringlist", "awwwwwwwwwwwwwwwwwwwww");
+	    return "home";
+	}		
+	
+
+}

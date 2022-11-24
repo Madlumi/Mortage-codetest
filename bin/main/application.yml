@@ -1,0 +1,12 @@
+spring:
+    banner.location: classpath:/banner.txt
+    mvc.view:
+        prefix: /WEB-INF/jsp/
+        suffix: .jsp
+        
+server:
+    error:
+        whitelabel:
+            enabled: true
+            
+logging.level.org.springframework.web: INFO

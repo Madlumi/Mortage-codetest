@@ -1,10 +1,12 @@
+ package morty;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 //dataholder class
 class mortData{
 	String name;
@@ -19,23 +21,26 @@ class mortData{
 		this.years=years;
 	}
 }
-class morty {
+
+@SpringBootApplication
+public class morty {
 	public static void main(String[] args){
 		dataFromFile();//could be modified to send in args to let user specify file
+		SpringApplication.run(morty.class, args);
 	}
 
 	//the function for parsing data from a file
-	public static int dataFromFile(){
+	public static ArrayList<String> dataFromFile(){
 		ArrayList<mortData> list=readFile("./Codetest-Mortageplan/prospects.txt");
-		if(list.size()<=0) {return -1;}//stop if no prospects found
+		if(list.size()<=0) {return null;}//stop if no prospects found
 		
 		for(int i = 0; i < list.size();i++){
 			double montly=monthlyMortagePayment(
 			list.get(i).totalLoan, percentToDecimal(list.get(i).interest),yearToMonth(list.get(i).years));
 			list.get(i).monthlyPayment=montly;
 		}	
-		printMortageData(list);
-		return 1;
+		ArrayList<String> s= printMortageData(list, true);
+		return s;
 	}
 	
 	//calculate a mortgage payment using given data
@@ -75,6 +80,9 @@ class morty {
 
 	}
 	
+	public static void newProspect(string name, double loanammount, double intr, int years){
+	
+	}
 	public static ArrayList<mortData> readFile(String filePath){
 		ArrayList<mortData> list=	new ArrayList<mortData>();
 		try{
@@ -97,6 +105,7 @@ class morty {
 				
 				
 			}
+			s.close();
 		}catch(FileNotFoundException e){
 			System.out.println("File not found, "+e);
 		}
@@ -104,14 +113,23 @@ class morty {
 	}
 	
 	//prints the list of (potential) mortgages
-	public static void printMortageData(ArrayList<mortData> l){
+	public static ArrayList<String> printMortageData(ArrayList<mortData> l, boolean print){
 		String padding = "****************************************************************************************************";
 		String outForm = "Prospect %d: %s wants to borrow %.2f € for a period of %d years and pay %.2f € each month%n";
+		ArrayList<String> s=	new ArrayList<String>();
 		for(int i = 0; i < l.size(); i++){
-			System.out.println(padding);//looks better above for loop 
-			System.out.format(outForm,(i+1),l.get(i).name,l.get(i).totalLoan,l.get(i).years,l.get(i).monthlyPayment);
-			System.out.println(padding);
+			
+			String ss = String.format(outForm,(i+1),l.get(i).name,l.get(i).totalLoan,l.get(i).years,l.get(i).monthlyPayment);
+			s.add(padding);
+			s.add(ss);
+			s.add(padding);
+			if(print) {
+				System.out.println(padding);
+				System.out.format(ss);
+				System.out.println(padding);
+			}
 		}
+		return  s;
 	}
 
 
