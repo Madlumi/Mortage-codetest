@@ -2,6 +2,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -102,7 +103,7 @@ public class morty {
 		ArrayList<mortData> list=	new ArrayList<mortData>();
 		try{
 			File f = new File(filePath);
-			Scanner s = new Scanner(f);
+			Scanner s = new Scanner(f,Charset.forName("UTF-8"));
 			//quick regex to read data, if more fields were to be added one would want to be using a csv parser instead
 			Pattern p1 =Pattern.compile("^([^,]*),([0-9.]+),([0-9.]+),([0-9]+)$");
 			Pattern p2 =Pattern.compile("^\"(.*)\",([0-9.]+),([0-9.]+),([0-9]+)$");			
@@ -120,7 +121,7 @@ public class morty {
 				}
 			}
 			s.close();
-		}catch(FileNotFoundException e){
+		}catch(Exception e){
 			System.out.println("File not found, "+e);
 		}
 		return list;
