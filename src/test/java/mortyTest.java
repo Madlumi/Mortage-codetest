@@ -68,7 +68,7 @@ public class mortyTest{
 	public void Test_newProspect_correctListEntry(){
 		morty.setProspList(testlListPath);
 		morty.newProspect("E", 1000, 10, 1, false);
-		assertEquals("Prospect 5: E wants to borrow 1000.00 € for a period of 1 years and pay 146.76 € each month\r\n", morty.getProspects().get(4));
+		assertEquals("Prospect 5: E wants to borrow 1000.00 € for a period of 1 years and pay 146.76 € each month", morty.getProspects().get(4).replace("\r","").replace("\n",""));
 	}
 	//Currently not tested: appending data to file
 	
@@ -128,8 +128,7 @@ public class mortyTest{
 	}
 	@Test
 	public void TestReadFile(){
-		assertEquals(4,morty.readFile("./Codetest-Mortageplan/prospects.txt").size());
-		//assertEquals("Karvinen",morty.readFile("./Codetest-Mortageplan/prospects.txt").get(1).name);
+		assertEquals(4,morty.readFile(testlListPath).size());
 	}
 	
 
