@@ -1,10 +1,12 @@
+Takes in a list of mortage prospects from a txt file and calculates monthy fixed payements.
+
 # Mortage-codetest
 
 
-gradlew bootrun #Starts web interface at http://127.0.0.1:8080/
+gradlew bootrun #Starts web interface on port 8080
 
 
 gradlew build        #Unit tests
 
 
-Requires java 17
+Uses java 17
