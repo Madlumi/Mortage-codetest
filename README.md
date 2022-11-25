@@ -1,3 +1,5 @@
+Takes in a list of mortage prospects from a txt file and calculates monthy fixed payements.
+
 # Mortage-codetest
 
 
