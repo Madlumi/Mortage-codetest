@@ -21,7 +21,9 @@ public class WebController {
 		String ss = "";
 		// Putting all the data into one string is (probably) not ideal, but works for now
 		for (int i = s.size()-1; i >=0; i--) { 
+			ss += morty.padding + "<br>";
 			ss += s.get(i) + "<br>";
+			ss += morty.padding + "<br>";
 		}
 		model.addAttribute("stringlist", ss);
 		return "index";
@@ -32,7 +34,9 @@ public class WebController {
 		ArrayList<String> s = morty.getProspects();
 		String ss = "";
 		for (int i = s.size()-1; i >=0; i--) { 
+			ss += morty.padding + "<br>";
 			ss += s.get(i) + "<br>";
+			ss += morty.padding + "<br>";
 		}
 		model.addAttribute("stringlist", ss);
 		return "index";

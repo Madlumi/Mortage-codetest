@@ -36,9 +36,16 @@ public class morty {
 	
 	public static void main(String[] args){
 		SpringApplication.run(morty.class, args);
+		getProspects();
 	}
 	
-	//returns list of prospects print formated
+	//to change file for unit testing purposes
+	public static void setProspList(String s) {
+		filepath=s;
+		ProspectList = new ArrayList<String>();
+	}
+	
+	//returns list of prospects print format
 	public static ArrayList<String> getProspects(){
 		if(ProspectList.size()<=0) {
 			ProspectList = dataFromFile();
@@ -50,7 +57,7 @@ public class morty {
 	public static ArrayList<String> dataFromFile(){
 		//parse file into mortData
 		ArrayList<mortData> plist=readFile(filepath);
-		if(plist.size()<=0) {return null;}
+		if(plist.size()<=0) {return new ArrayList<String>();}
 		
 		//calculate mortage for list
 		for(int i = 0; i < plist.size();i++){
@@ -65,11 +72,12 @@ public class morty {
 	//validate data
 	public static boolean validateProspect(String name, double loanammount, double intr, int years) {
 		if(loanammount<=0) {return false;}
+		if(name.length()<=0) {return false;}
 		if(years<=0) {return false;}
 		return true;
 	}
 	
-	//new prospect added through web interface
+	//adds new prospect added through web interface
 	public static void newProspect(String name, double loanammount, double intr, int years, boolean save){
 		//make sure list is loaded to prevent a bug
 		getProspects();
@@ -80,7 +88,7 @@ public class morty {
 		 mortData m = new mortData( name, loanammount, intr,  years);
 		 m.monthlyPayment=monthlyMortagePayment(m);
 		 md.add(m);
-		ProspectList.addAll(printMortageData(md, false,ProspectList.size()/3));
+		ProspectList.addAll(printMortageData(md, false,ProspectList.size()));
 		//append to file
 		if(!save) {return;}
 		String outForm = "%n%s,%.2f,%.2f,%d";
@@ -129,19 +137,17 @@ public class morty {
 	
 	//prints the list of (potential) mortgages
 	//returns list of print output
-	public static ArrayList<String> printMortageData(ArrayList<mortData> l, boolean print){
+	private static ArrayList<String> printMortageData(ArrayList<mortData> l, boolean print){
 		return  printMortageData(l,  print,0);
 	}
-	public static ArrayList<String> printMortageData(ArrayList<mortData> l, boolean print, int prevpros){
-		String padding = "****************************************************************************************************";
+	public static String padding = "****************************************************************************************************";
+	private static ArrayList<String> printMortageData(ArrayList<mortData> l, boolean print, int prevpros){
 		String outForm = "Prospect %d: %s wants to borrow %.2f € for a period of %d years and pay %.2f € each month%n";
 		ArrayList<String> s=	new ArrayList<String>();
 		for(int i = 0; i < l.size(); i++){
 			
 			String ss = String.format(outForm,(i+1+prevpros),l.get(i).name,l.get(i).totalLoan,l.get(i).years,l.get(i).monthlyPayment);
-			s.add(padding);
 			s.add(ss);
-			s.add(padding);
 			if(print) {
 				System.out.println(padding);
 				System.out.format(ss);
